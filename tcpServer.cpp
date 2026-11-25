@@ -25,9 +25,17 @@
 
 #define SA struct sockaddr
 
-void chat(int connfd){
-    
+static void do_something(int connfd) {
+    char rbuf[64] = {};
+    ssize_t n = read(connfd, rbuf, sizeof(rbuf) - 1);
+    if (n < 0) {
+        msg("read() error");
+        return;
+    }
+    printf("client says: %s\n", rbuf);
 
+    char wbuf[] = "world";
+    write(connfd, wbuf, strlen(wbuf));
 }
 
 int main(){
